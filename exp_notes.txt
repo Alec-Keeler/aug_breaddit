@@ -1,0 +1,32 @@
+1: Install express package
+    npm install express
+    npm install nodemon (nodemon is a package that will restart server when changes occur)
+        scripts: "start": "nodemon app.js"
+
+2: Set up an app.js
+    require express package
+    build the app object
+        const app = express()
+    set up server
+        const port = 8080;
+        app.listen(port, () => console.log(`Server is running on port ${port}.... :D`))
+
+3: Set up a route handler
+    method
+        get
+        post
+        put/patch
+        delete
+        all
+    path
+        '/'
+        '/users'
+    callback
+        (req, res)
+            res.send()
+
+4: Send a response
+    methods:
+        send
+        json
+        render
