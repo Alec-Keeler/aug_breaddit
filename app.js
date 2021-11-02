@@ -2,12 +2,13 @@ const express = require('express');
 const { User } = require('./models');
 
 const app = express();
+app.set('view engine', 'pug')
 
 //GET, /
 app.get('/', async(req, res) => {
-    // const user = await User.findByPk(1);
-    // console.log(user.username)
-    res.send('Hello from Breaddit!')
+    const users = await User.findAll();
+    // const username = user.username
+    res.render('index', {title: 'Breaddit', users})
 })
 
 
