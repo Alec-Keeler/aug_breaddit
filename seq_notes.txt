@@ -1,0 +1,68 @@
+Step 1: initializing node
+
+Step 2: Npm install:
+    sequelize@^5.0.0
+    sequelize-cli@^5.0.0
+    pg
+
+Step 3: Initalize sequelize
+    npx sequelize init
+
+Step 4: Edit the config.json file
+    Change username
+    Change password
+    Change database name
+    Change dialect
+    Remove operatorsAliases key/value
+    Add seederStorage: sequelize
+
+Step 5: Create the database
+    npx sequelize db:create
+
+Step 6: Create tables (migrations/models)
+    npx sequelize model:generate --name ModelName --attributes colOne:dataType,colTwo:dataType
+    migrations: Blueprint for the tables
+        ALWAYS PLURAL
+    models: How we interact with the table AFTER it's been created
+        ALWAYS SINGULAR
+
+    6b: Run the migration!
+        npx sequelize db:migrate
+        (you can drop migrations with: npx sequelize db:migrate:undo:all)
+
+Step 7: Insert data
+    npx sequelize seed:generate --name nameOfSeedFile
+    After file is generated, take relevant code from comments and paste outside of comment
+    Enter relevant information for new rows
+    Pay attention to the down method
+    Seed the files: npx sequelize db:seed:all
+
+    Undoing a seed: npx sequelize db:seed:undo:all
+
+    Clean Slate Approach:
+        undoing seeds, undoing migrations, redoing migrations, redoing seeds
+        npx sequelize db:seed:undo:all
+        npx sequelize db:migrate:undo:all
+        npx sequelize db:migrate
+        npx sequelize db:seed:all
+
+
+Step 8: Set up associations
+    hasOne
+    hasMany
+    belongsTo
+    belongsToMany
+
+
+Sequelize query methods:
+build
+create
+save
+destroy
+findByPk
+    use when we have a primary key
+findOne
+    use when looking for ONE record (when you don't have the PK)
+findAll
+    use when lookig for multiple records
+    always returns an array
