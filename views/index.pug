@@ -4,7 +4,8 @@ html
     body
         h1(class='anotherClass' id='someOtherId') Welcome to Breaddit!
             p Hi this is breaddit we like to talk about bread
+        a(href="/posts") Posts Page
         each user in users
             div(id=`user-container-${user.id}`)
-                div Username: #{user.username}
+                div Username: !{user.username}
             br

@@ -1,0 +1,8 @@
+html 
+    head
+        title= title
+    body
+        h1 Posts
+        each post in posts
+            div= post.title
+            a(href=`/posts/${post.id}`) Go to post page
