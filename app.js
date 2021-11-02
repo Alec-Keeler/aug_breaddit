@@ -4,7 +4,8 @@ const postsRouter = require('./routes/posts');
 
 const app = express();
 app.set('view engine', 'pug');
-app.use(postsRouter);
+app.use('/posts', postsRouter);
+// app.use('/comments', postsRouter);
 
 //GET, /
 app.get('/', async(req, res) => {
