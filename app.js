@@ -1,32 +1,33 @@
 const express = require('express');
 const { User, Post } = require('./models');
 const postsRouter = require('./routes/posts');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 app.set('view engine', 'pug');
+app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
+
 app.use('/posts', postsRouter);
 // app.use('/comments', postsRouter);
 
+const banana = (req, res, next) => {
+    req.banana = true;
+    next()
+}
+
+app.use(banana)
 //GET, /
 app.get('/', async(req, res) => {
     const users = await User.findAll();
+    console.log(req.banana)
+    if (req.banana) {
+        res.render('index', {title: 'Breaddit', users})
+    } else {
+        res.send("Where is the banana???")
+    }
     // const username = user.username
-    res.render('index', {title: 'Breaddit', users})
 })
-
-// // /posts
-// app.get(/^\/posts$/, async(req, res) => {
-//     // res.send('Hello from posts page')
-//     const posts = await Post.findAll()
-//     res.render('posts', {title: 'Breaddit Posts', posts})
-// })
-
-// app.get('/posts/:id(\\d+)', async(req, res) => {
-//     console.log(req.params.id)
-//     const post = await Post.findByPk(req.params.id)
-//     console.log(post.title)
-//     res.send('We got a post')
-// })
 
 // top level - /posts/, /users
 // nested resource - /posts/1, /users/4/profile, /posts/comments

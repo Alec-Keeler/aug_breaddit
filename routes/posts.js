@@ -1,11 +1,15 @@
 const express = require('express');
-const { Post } = require('../models');
+const { Post, Subbreaddit } = require('../models');
+const csrf = require('csurf');
+
+const csrfProtection = csrf({cookie: true})
 
 const router = express.Router()
 // /posts
 // router.get(/^\/posts$/, async (req, res) => {
 router.get('/', async (req, res) => {
     // res.send('Hello from posts page')
+    console.log(req.banana)
     const posts = await Post.findAll()
     res.render('posts', { title: 'Breaddit Posts', posts })
 })
@@ -17,12 +21,37 @@ router.get('/:id(\\d+)', async (req, res) => {
     res.send('We got a post')
 })
 
-router.get('/new', (req, res) => {
-    res.render('new-post', {title: 'Create Post'})
+const contentChecker = (req, res, next) => {
+    const { content } = req.body;
+    req.errors = []
+    if (content.length < 10) {
+        req.errors.push('Content is too short')
+        next()
+    } else {
+        next()
+    }
+}
+
+router.get('/new', csrfProtection, async(req, res) => {
+    const subs = await Subbreaddit.findAll()
+    res.render('new-post', {title: 'Create Post', subs, csrfToken: req.csrfToken(), errors: [], post: {}})
 })
 
-router.post('/new', (req, res) => {
-    console.log('We got to our first post router')
+router.post('/new', csrfProtection, contentChecker, async(req, res) => {
+    console.log(req.body)
+    const { title, content, subId } = req.body
+    const subs = await Subbreaddit.findAll()
+    if (req.errors.length > 0) {
+        res.render('new-post', { title: 'Create Post', subs, csrfToken: req.csrfToken(), errors: req.errors, post: req.body})
+    } else {
+        const post = await Post.create({
+            title,
+            content,
+            userId: 1,
+            subId
+        })
+        res.redirect('/posts')
+    }
 })
 
 module.exports = router;
