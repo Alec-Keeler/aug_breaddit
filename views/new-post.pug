@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content
+    h1 CREATE A POST
+    form(action="/posts/new" method="post") 
+        label(for="title") Title
+        input(type="text" name="title")
+        label(for="content") Content
+        textarea(name="content")
+        button Submit Post

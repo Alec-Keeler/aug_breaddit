@@ -17,5 +17,12 @@ router.get('/:id(\\d+)', async (req, res) => {
     res.send('We got a post')
 })
 
+router.get('/new', (req, res) => {
+    res.render('new-post', {title: 'Create Post'})
+})
+
+router.post('/new', (req, res) => {
+    console.log('We got to our first post router')
+})
 
 module.exports = router;
