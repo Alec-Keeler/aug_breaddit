@@ -1,5 +1,5 @@
 const express = require('express');
-const { Post, Subbreaddit } = require('../models');
+const { Post, Subbreaddit } = require('../db/models');
 const csrf = require('csurf');
 
 const csrfProtection = csrf({cookie: true})
@@ -38,9 +38,10 @@ router.get('/new', csrfProtection, async(req, res) => {
 })
 
 router.post('/new', csrfProtection, contentChecker, async(req, res) => {
-    console.log(req.body)
     const { title, content, subId } = req.body
     const subs = await Subbreaddit.findAll()
+    // console.log(req.body.subId, subs[0].id)
+    req.body.subId = parseInt(req.body.subId)
     if (req.errors.length > 0) {
         res.render('new-post', { title: 'Create Post', subs, csrfToken: req.csrfToken(), errors: req.errors, post: req.body})
     } else {

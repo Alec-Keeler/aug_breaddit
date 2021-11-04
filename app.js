@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Post } = require('./models');
+const { User, Post } = require('./db/models');
 const postsRouter = require('./routes/posts');
 const cookieParser = require('cookie-parser');
 
@@ -7,6 +7,7 @@ const app = express();
 app.set('view engine', 'pug');
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
+app.use(express.static('./public'))
 
 app.use('/posts', postsRouter);
 // app.use('/comments', postsRouter);
@@ -36,5 +37,7 @@ app.all(/^\/\w+\/?$/, (req, res) => {
 })
 
 
-const port = 8080;
-app.listen(port, () => console.log(`Server is running on port ${port}.... :D`))
+// const port = 8080;
+// app.listen(port, () => console.log(`Server is running on port ${port}.... :D`))
+
+module.exports = app;

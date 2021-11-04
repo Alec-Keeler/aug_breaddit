@@ -2,5 +2,6 @@ extends layout.pug
 block content
     h1 Posts
     each post in posts
-        div= post.title
-        a(href=`/posts/${post.id}`) Go to post page
+        .post-container
+            div= post.title
+            a(href=`/posts/${post.id}`) Go to post page

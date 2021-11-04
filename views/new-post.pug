@@ -14,5 +14,5 @@ block content
         label(for="subId") Subbreaddit
         select(name="subId")
              each sub in subs 
-                option(value=sub.id)= sub.name
+                option(value=sub.id selected=(sub.id === post.subId))= sub.name
         button Submit Post
