@@ -4,6 +4,14 @@ const csrf = require('csurf');
 
 const csrfProtection = csrf({cookie: true})
 
+const asyncHandler = (handler) => {
+    return (req, res, next) => {
+        return handler(req, res, next).catch(next);
+    };
+};
+
+// const asyncHandler = (handler) => (req, res, next) => handler(req, res, next).catch(next);
+
 const router = express.Router()
 // /posts
 // router.get(/^\/posts$/, async (req, res) => {
@@ -14,12 +22,12 @@ router.get('/', async (req, res) => {
     res.render('posts', { title: 'Breaddit Posts', posts })
 })
 
-router.get('/:id(\\d+)', async (req, res) => {
+router.get('/:id(\\d+)', asyncHandler(async (req, res) => {
     console.log(req.params.id)
     const post = await Post.findByPk(req.params.id)
     console.log(post.title)
     res.send('We got a post')
-})
+}))
 
 const contentChecker = (req, res, next) => {
     const { content } = req.body;
