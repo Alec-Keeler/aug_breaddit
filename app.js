@@ -3,12 +3,19 @@ const { User, Post } = require('./db/models');
 const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 const app = express();
 app.set('view engine', 'pug');
 app.use(express.urlencoded({extended: false}))
-app.use(cookieParser())
+app.use(cookieParser('password'))
 app.use(express.static('./public'))
+
+app.use(session({
+    secret: 'password',
+    saveUninitialized: false,
+    resave: false
+}))
 
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
@@ -23,7 +30,8 @@ app.use(banana)
 //GET, /
 app.get('/', async(req, res) => {
     const users = await User.findAll();
-    console.log(req.banana)
+    // console.log(req.banana)
+    console.log(req.session.user)
     if (req.banana) {
         res.render('index', {title: 'Breaddit', users})
     } else {

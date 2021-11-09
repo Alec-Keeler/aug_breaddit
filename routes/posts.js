@@ -40,6 +40,14 @@ const contentChecker = (req, res, next) => {
     }
 }
 
+router.use((req, res, next) => {
+    if (req.session.user) {
+        next()
+    } else {
+        res.redirect('/users/login')
+    }
+})
+
 router.get('/new', csrfProtection, async(req, res) => {
     const subs = await Subbreaddit.findAll()
     res.render('new-post', {title: 'Create Post', subs, csrfToken: req.csrfToken(), errors: [], post: {}})
@@ -56,7 +64,7 @@ router.post('/new', csrfProtection, contentChecker, async(req, res) => {
         const post = await Post.create({
             title,
             content,
-            userId: 1,
+            userId: req.session.user.userId,
             subId
         })
         res.redirect('/posts')
