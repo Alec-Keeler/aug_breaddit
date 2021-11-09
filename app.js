@@ -1,6 +1,7 @@
 const express = require('express');
 const { User, Post } = require('./db/models');
 const postsRouter = require('./routes/posts');
+const usersRouter = require('./routes/users');
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(cookieParser())
 app.use(express.static('./public'))
 
 app.use('/posts', postsRouter);
+app.use('/users', usersRouter);
 // app.use('/comments', postsRouter);
 
 const banana = (req, res, next) => {
