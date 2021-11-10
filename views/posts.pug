@@ -1,7 +1,11 @@
 extends layout.pug
 block content
+    script(src="/javascripts/index.js" type="module") 
     h1 Posts
     each post in posts
-        .post-container
+        div(class=`post-container-${post.id}`)
             div= post.title
             a(href=`/posts/${post.id}`) Go to post page
+            if post.userId == userId
+                form(action=`/posts/${post.id}/delete` method="post")
+                    button(class="delete-btn" id=post.id) Delete

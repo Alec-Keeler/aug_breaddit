@@ -19,7 +19,11 @@ router.get('/', async (req, res) => {
     // res.send('Hello from posts page')
     console.log(req.banana)
     const posts = await Post.findAll()
-    res.render('posts', { title: 'Breaddit Posts', posts })
+    let userId = undefined
+    if (req.session.user) {
+       userId = req.session.user.userId
+    }
+    res.render('posts', { title: 'Breaddit Posts', posts, userId })
 })
 
 router.get('/:id(\\d+)', asyncHandler(async (req, res) => {
@@ -69,6 +73,22 @@ router.post('/new', csrfProtection, contentChecker, async(req, res) => {
         })
         res.redirect('/posts')
     }
+})
+
+// router.post('/:id(\\d+)/delete', async(req, res) => {
+//     const post = await Post.findByPk(req.params.id);
+
+//     await post.destroy()
+
+//     res.redirect('/posts')
+// })
+
+router.delete('/:id(\\d+)', async(req, res) => {
+    const post = await Post.findByPk(req.params.id);
+
+    await post.destroy()
+
+    res.json({message: "Successful"})
 })
 
 module.exports = router;
